@@ -1,0 +1,25 @@
+VAPT Platform — Release Verification
+
+Source checks completed on 2026-09-05:
+- Composer manifest: valid with --strict
+- PHP lint: all app/bootstrap/config/database/routes/tests PHP files pass syntax validation
+- Blade compilation: 27/27 Blade templates compile successfully
+- Route loading: Laravel route:list succeeds; 53 named routes registered
+- Queue configuration: database queue retry window is longer than the maximum supported job runtime
+- Scope safety: server-side domain/host/port/path/window checks; DNS-resolved IPs are enforced and private/reserved IPs require explicit CIDR authorization
+- Project isolation: nested project objects are checked against their parent project server-side
+- Secrets/runtime cleanup: .env, logs, runtime reports, session/cache artifacts, and bundled Composer PHAR are excluded from the release
+
+Environment prerequisites for actual deployment:
+- PHP 8.2+
+- pdo_mysql, mbstring, dom, xml, xmlwriter, curl, fileinfo
+- MySQL 8+ or compatible MySQL/MariaDB
+- Composer 2.x
+- Web server pointed at public/
+- Database queue worker on the vapt queue
+
+Run after installation and .env configuration:
+  php artisan migrate --seed
+  php artisan storage:link
+  php artisan vapt:preflight
+  php artisan queue:work database --queue=vapt --sleep=1 --tries=1 --timeout=1800

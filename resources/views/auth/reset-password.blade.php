@@ -1,0 +1,4 @@
+@extends('layouts.app', ['title' => 'Set New Password'])
+@section('content')
+<div style="max-width:440px;margin:3rem auto"><div class="card"><h1 class="card-title">Set New Password</h1><form method="POST" action="{{ route('password.update') }}">@csrf<input type="hidden" name="token" value="{{ $token }}"><div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" name="email" value="{{ old('email',$email) }}" required></div><div class="form-group"><label class="form-label">New Password</label><input class="form-input" type="password" name="password" required></div><div class="form-group"><label class="form-label">Confirm Password</label><input class="form-input" type="password" name="password_confirmation" required></div><button class="btn btn-primary" style="width:100%">Reset Password</button></form></div></div>
+@endsection
